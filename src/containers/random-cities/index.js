@@ -117,7 +117,7 @@ class RandomCityMap extends Component {
 
 						{this.props.count} {this.state.name} {String(this.props.winner)}
 					</h5>
-					<button onClick={this.props.checkWinner}>{this.state.name} is the closest?</button>
+					<button onClick={this.props.inside}>{this.state.name} is the closest?</button>
 					
 					<RandomCity
 						containerElement={

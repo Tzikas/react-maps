@@ -61,7 +61,6 @@ export const setLocation = (yo) => {
 }
 
 export const checkWinner = (yo) => {
-	console.log('adfs')
   return dispatch => {
     dispatch({
       type: CHECKWINNER,
