@@ -17,7 +17,6 @@ export default (state = initialState, action) => {
 
       }
     case ADDMAP: 
-      console.log(state,action)	
       return {
       	...state,
 	maps: [...state.maps, action.payload]

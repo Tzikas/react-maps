@@ -55,7 +55,6 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
  */
 class YourMap extends Component {
-
 	state = {
 		center: null,
 	};
@@ -74,6 +73,11 @@ class YourMap extends Component {
 					lng: position.coords.longitude,
 				}
 			});
+			console.log(this)
+			let winner = Math.floor(Math.random()*4+1)
+			this.setState({winner:winner})
+			console.log(this)
+
 
 		}, (reason) => {
 			if (this.isUnmounted) {
@@ -86,6 +90,8 @@ class YourMap extends Component {
 				}
 			});
 		});
+
+		
 	}
 
 	componentWillUnmount() {
@@ -93,6 +99,15 @@ class YourMap extends Component {
 	}
 
 	render() {
+		var rands = [];
+		for (var i=0; i < 4; i++) {
+			if(this.state.winner === i){
+				var winner = true;
+			}else{
+				var winner = false; 
+			}
+    			rands.push(<RandomCityMap key={i} winner={winner}/>);
+		}
 		return (
 
 			<div>
@@ -106,11 +121,8 @@ class YourMap extends Component {
 				}
 				center={this.state.center}
 			/>
-			<RandomCityMap />
-			<RandomCityMap />
-			<RandomCityMap />
-			<RandomCityMap />
-			
+			{rands}		
+				
 			</div>
 		);
 	}

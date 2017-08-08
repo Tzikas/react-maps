@@ -40,8 +40,6 @@ export default (state = initialState, action) => {
         isDecrementing: !state.isDecrementing
       }
     case LOCATION: 
-      console.log(state,action)
-      //state.theLocation = action.payload
       return {
       	...state,
 	randomLocations: [...state.randomLocations, action.payload]

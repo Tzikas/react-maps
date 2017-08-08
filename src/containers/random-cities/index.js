@@ -97,7 +97,6 @@ class RandomCityMap extends Component {
 					name: city.city,
 				}
 			this.setState(c)
-			console.log(this)
 			this.props.setLocation(c)
 		})
 		.catch((err) => {
