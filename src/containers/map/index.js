@@ -74,7 +74,7 @@ class YourMap extends Component {
 				}
 			});
 			console.log(this)
-			let winner = Math.floor(Math.random()*4+1)
+			let winner = Math.floor(Math.random()*4)
 			this.setState({winner:winner})
 			console.log(this)
 

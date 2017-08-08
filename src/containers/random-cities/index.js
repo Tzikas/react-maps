@@ -7,9 +7,8 @@ import { connect } from 'react-redux'
 import {
   increment,
   incrementAsync,
-  decrement,
-  decrementAsync,
-  setLocation
+  setLocation,
+  checkWinner
 } from './randomMap'
 
 
@@ -116,9 +115,9 @@ class RandomCityMap extends Component {
 
 					<h5 style={{margin:`10px 0 0 0`}} onClick={this.props.increment} > 
 
-						{this.props.count} {this.state.name}
+						{this.props.count} {this.state.name} {String(this.props.winner)}
 					</h5>
-					<button>{this.state.name} is the closest</button>
+					<button onClick={this.props.checkWinner}>{this.state.name} is the closest?</button>
 					
 					<RandomCity
 						containerElement={
@@ -147,15 +146,14 @@ const mapStateToProps = state => {
 		  count: state.counter.count,
 		  isIncrementing: state.counter.isIncrementing,
 		  isDecrementing: state.counter.isDecrementing,
-	   	  theLocation: state.randomMap.theLocation	 
+	   	  theLocation: state.randomMap.theLocation,
+		  checkWinner: state.randomMap.winner
 	})
 }
 const mapDispatchToProps = dispatch => bindActionCreators({
   increment,
-  incrementAsync,
-  decrement,
-  decrementAsync,
-  setLocation,      
+  setLocation,
+  checkWinner,      
   changePage: () => push('/about-us')
 }, dispatch)
 
