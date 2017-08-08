@@ -105,7 +105,13 @@ class YourMap extends Component {
 		//this.forceUpdate()
 	 	//this.setState(this.state)	
 		//this.setState({ key: Math.random() });
-		
+		this.setState({
+			center: {
+				lat: 60,
+				lng: 105,
+			}
+		});
+
 	}
 
 	componentWillUnmount() {
