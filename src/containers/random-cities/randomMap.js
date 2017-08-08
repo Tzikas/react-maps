@@ -9,7 +9,7 @@ const initialState = {
   count: 0,
   isIncrementing: false,
   isDecrementing: false,
-  theLocation: false 
+  randomLocations: [] 
 }
 
 export default (state = initialState, action) => {
@@ -41,10 +41,10 @@ export default (state = initialState, action) => {
       }
     case LOCATION: 
       console.log(state,action)
-      state.theLocation = action.payload
+      //state.theLocation = action.payload
       return {
       	...state,
-	theLocation: state.theLocation
+	randomLocations: [...state.randomLocations, action.payload]
 
       }
 

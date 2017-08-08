@@ -96,6 +96,7 @@ class YourMap extends Component {
 		return (
 
 			<div>
+			<button onClick={this.props.addMap}>Push</button>
 			<GeolocationExampleGoogleMap
 				containerElement={
 					<div style={{ height: `200px` }} />
@@ -106,6 +107,10 @@ class YourMap extends Component {
 				center={this.state.center}
 			/>
 			<RandomCityMap />
+			<RandomCityMap />
+			<RandomCityMap />
+			<RandomCityMap />
+			
 			</div>
 		);
 	}
@@ -113,7 +118,7 @@ class YourMap extends Component {
 
 const mapStateToProps = state => ({
   count: state.counter.count,
-  theLocation: state.yourMap.theLocation
+  randomLocations:state.randomMap.randomLocations
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
