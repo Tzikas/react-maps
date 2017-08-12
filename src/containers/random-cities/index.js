@@ -50,15 +50,18 @@ const geolocation = (
 const RandomCity = withGoogleMap(props => {
 	//console.log(props) 
 	return (
-	<div>
-		<i>{props.name}</i>		
-		
-		<GoogleMap defaultZoom={12} center={props.center}>
-			<Marker position={props.center} title={props.name} />
-		</GoogleMap>
-	</div>
+		<div>
+			<i>{props.name}</i>		
+			
+			<GoogleMap defaultZoom={12} center={props.center}>
+				<Marker position={props.center} title={props.name} />
+			</GoogleMap>
+		</div>
 	)
 });
+
+
+
 
 
 
