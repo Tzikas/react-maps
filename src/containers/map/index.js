@@ -21,8 +21,8 @@ import {
 
 import {
 	withGoogleMap,
-		GoogleMap,
-		Marker,
+	GoogleMap,
+	Marker,
 } from "react-google-maps";
 
 
@@ -42,15 +42,13 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
 			</GoogleMap>
 			));
 
-
-const outside = ()=>{
-	console.log('hi');	
-}
 /*
  * https://developers.google.com/maps/documentation/javascript/examples/map-geolocation
  *
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
  */
+
+
 class YourMap extends Component {
 	constructor(props){
 		super(props);
@@ -61,47 +59,20 @@ class YourMap extends Component {
 	}
 
 	isUnmounted = false;
-
+	componentWillReceiveProps(){
+	}
 	componentDidMount() {
 
 		this.props.getFirstMap();
-		console.log(this);
-		//put this inside an action and then add a promise 
-		/*geolocation.getCurrentPosition((position) => {
-		  if (this.isUnmounted) {
-		  return;
-		  }
-		  this.setState({
-		  center: {
-		  lat: position.coords.latitude,
-		  lng: position.coords.longitude,
-		  }
-		  });
-		  let winner = Math.floor(Math.random()*4)
-		  this.setState({winner:winner})
+		let winner = Math.floor(Math.random()*4)
 
-
-
-		//Calculate teh distance here... 
-		//
-		//
-
-		}, (reason) => {
-		if (this.isUnmounted) {
-		return;
-		}
-		this.setState({
-		center: {
-		lat: 60,
-		lng: 105,
-		}
-		});
-		});*/
-		//this.inside();
 	}
 
 	componentWillUnmount() {
 		this.isUnmounted = true;
+	}
+	componentDidUpdate(){
+
 	}
 
 	render() {
@@ -112,20 +83,21 @@ class YourMap extends Component {
 			}else{
 				var winner = false; 
 			}
-			rands.push(<RandomCityMap key={i} winner={winner} inside={this.inside}/>);
+			//rands.push(<RandomCityMap key={i} winner={winner} inside={this.inside}/>);
 		}
 		return (
 
 				<div>
 				<button onClick={this.props.addMap}>Push</button>
 				<GeolocationExampleGoogleMap
+					key={'frenchtoast'}
 					containerElement={
 						<div style={{ height: `200px` }} />
 					}
 					mapElement={
 						<div style={{ height: `200px` }} />
 					}
-					center={this.state.center}
+					center={this.props.center}
 				/>
 				{rands}		
 
@@ -136,8 +108,10 @@ class YourMap extends Component {
 
 const mapStateToProps = state => ({
 	count: state.counter.count,
-      	randomLocations:state.randomMap.randomLocations,
-      	position: state.yourMap
+      	//randomLocations:state.randomMap.randomLocations,
+	randomCities: state.yourMap.randomCities,
+      	position: state.yourMap.position,
+        center: state.yourMap.center
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
