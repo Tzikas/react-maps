@@ -5,7 +5,8 @@ import {
 		Marker,
 } from "react-google-maps";
 
-
+import thunk from 'redux-thunk'
+import store from '../../store'
 
 export const LOCATION = 'adfdsf/LOCATasdION/usethisforoutsidedispatchcalls' 
 export const ADDMAP = ''; 
@@ -25,35 +26,24 @@ const initialState = {
 
 export default (state = initialState, action) => {
 
-	//console.log(action.type)
-	//console.log(action.payload)
+	////console.log(action.type)
+	////console.log(action.payload)
 	switch (action.type) {
-		case LOCATION: 
-			state.theLocation = action.payload
-				return {
-					...state,
-					theLocation: state.theLocation
-
-				}
-		case ADDMAP: 
-			return {
-				...state,
-				maps: [...state.maps, action.payload]
-			}
 		case 'SETCENTER':
 			return{
 				...state,
 				center: action.payload
 			}
+		case 'SET_RANDOM_CITIES':
+			//console.log(action) 
+			return{
+				...state,
+				randomCities: [action.payload],
+				winner: action.winner
 
-		case 'SET RANDOM': 
-			console.log(...state.randomCities)
-				return {
-					...state,
-					randomCities: [...state.randomCities, action.payload]
+			}
 
-				}
-
+		
 		default:
 			return state
 	}
@@ -84,82 +74,15 @@ export const setCenter = (position) => {
 	let center = {};
 	center['lat'] = position.coords.latitude;
 	center['lng'] = position.coords.longitude;
-	console.log('SETCENTER');
+	//console.log('SETCENTER');
 
 	return{
 		type:'SETCENTER',
-			payload:center	
+		payload:center	
 	}
 }
 
 
-/*
-const fetchRandomCity = (position) => {
-	console.log(position);
-	let city = ''		
-		fetch('https://pure-river-42551.herokuapp.com/api/randomcity',{
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-				},
-				})
-	.then((response) => {
-		//console.log(response) 
-		return response.json()
-	})
-	.then((city) => {
-
-		/*var c = {
-		  center: {
-		  lat: city.lat,
-		  lng: city.lon,
-		  },
-		  name: city.city,
-		  }
-		  this.setState(c)
-		  this.props.setLocation(c)/*
-		console.log(city)
-
-	})
-	.catch((err) => {
-		//console.log(err);
-	});
-
-	return{
-		type:'SET RANDOM',
-			payload:city	
-	}
-
-}
-
-const geolocation = (
-		canUseDOM && navigator.geolocation ?
-		navigator.geolocation : 
-		({
-			getCurrentPosition(success, failure) {
-				failure(`Your browser doesn't support geolocation.`);
-			},
-		})
-		);
-
-
-// action creator
-
-function fetchAB() {
-	return dispatch => {
-		const fetchA = fetch( 'https://pure-river-42551.herokuapp.com/api/randomcity' );
-		const fetchB = fetch( 'api/endpoint/B' );
-		return Promise.all([ fetchA, fetchB ])
-			.then( values => {
-				console.log('yo')
-				dispatch(showABAction(values)) 
-
-			})
-		//.catch( err => throw err );
-	}
-} 
-showABAction
-*/
 
 const geolocation = (
 		canUseDOM && navigator.geolocation ?
@@ -174,27 +97,39 @@ const geolocation = (
 
 
 const calculateWinner = (cities, position) =>{
-	console.log(cities, position)
+	//console.log(cities, position)
+	console.log(store.getState().yourMap.center)
+	
+	//let yourLat = position.coords.latitude;	
+	//let yourLng = position.coords.longitude;
+	console.log(cities);
 
-	let yourLat = position.coords.latitude;	
-	let yourLng = position.coords.longitude;
+	let yourLat = store.getState().yourMap.center.lat;   //probably a better way 
+	let yourLng = store.getState().yourMap.center.lng;
+	
 	let distance = 99999999; 
 	let winner = ''; 
 	
 	cities.forEach( (c) => {
-		console.log(c.city)
-		console.log(getDistanceFromLatLonInKm(yourLat, yourLng, c.lat, c.lon))
+		//console.log(c.city)
+		//console.log(getDistanceFromLatLonInKm(yourLat, yourLng, c.lat, c.lon))
 		let d = getDistanceFromLatLonInKm(yourLat, yourLng, c.lat, c.lon); 
+		c['distance'] = d; 
 		if(d < distance){
 			distance = d;
 		        winner = c.city	
 		}
+		
 	})
 	
 	console.log(`winner is ${winner}`)
 
 
-	return { type: '', action: ''}
+	return { 
+		type: 'SET_RANDOM_CITIES',
+		payload: cities,
+		winner: winner
+	}
 
 
 }
@@ -217,44 +152,54 @@ function deg2rad(deg) {
 }
 
 
-const fetchRandomCities = (position) => {
+export const fetchRandomCities = (position) => {
 	console.log(position);
 	return dispatch => {
 	let cities = [];
 		const fetchA = fetch( 'https://pure-river-42551.herokuapp.com/api/randomcity' )	
 			.then((response) => {
-				//console.log(response) 
+				////console.log(response) 
 				return response.json()
 			})
 			.then((city) => {
-				console.log(city)
+				//console.log(city)
 				cities.push(city)
 			});	  
 
 		const fetchB = fetch( 'https://pure-river-42551.herokuapp.com/api/randomcity' )	
 			.then((response) => {
-				//console.log(response) 
+				////console.log(response) 
 				return response.json()
 			})
 			.then((city) => {
-				console.log(city)
+				//console.log(city)
 				cities.push(city)
 
 			});	
 		const fetchC = fetch( 'https://pure-river-42551.herokuapp.com/api/randomcity' )	
 			.then((response) => {
-				//console.log(response) 
+				////console.log(response) 
 				return response.json()
 			})
 			.then((city) => {
-				console.log(city)
+				//console.log(city)
 				cities.push(city)
 
-			});		
-		return Promise.all([ fetchA, fetchB, fetchC ])
+			});
+		const fetchD = fetch( 'https://pure-river-42551.herokuapp.com/api/randomcity' )	
+			.then((response) => {
+				////console.log(response) 
+				return response.json()
+			})
+			.then((city) => {
+				//console.log(city)
+				cities.push(city)
+
+			});				
+		return Promise.all([ fetchA, fetchB, fetchC, fetchD ])
 			.then( values => {
 				dispatch(calculateWinner(cities, position)) 
-
+				
 		})
 	}
 	//return { type: '', action: ''}
@@ -270,7 +215,7 @@ export const getFirstMap = () => {
 			if (this.isUnmounted) {
 				return;
 			}
-			console.log(position)
+			//console.log(position)
 			dispatch(setCenter(position))
 			//return cities.push(position)
 			dispatch(fetchRandomCities(position))
@@ -291,8 +236,8 @@ export const getFirstMap = () => {
    return;
    }
    dispatch(setCenter(position))
-   console.log('position')
-   console.log(position)
+   //console.log('position')
+   //console.log(position)
 //CALL ANOTHER AJAX FETCH HERE
 //DISPATCH THAT RETURNING DATA INTO CONST SETSECOND MAP
 //Calculate teh distance here... 
@@ -321,4 +266,71 @@ return Promise.all([ fetchA, fetchB ])
 
 
 
+/*
+const fetchRandomCity = (position) => {
+	//console.log(position);
+	let city = ''		
+		fetch('https://pure-river-42551.herokuapp.com/api/randomcity',{
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+				},
+				})
+	.then((response) => {
+		////console.log(response) 
+		return response.json()
+	})
+	.then((city) => {
+
+		/*var c = {
+		  center: {
+		  lat: city.lat,
+		  lng: city.lon,
+		  },
+		  name: city.city,
+		  }
+		  this.setState(c)
+		  this.props.setLocation(c)/*
+		//console.log(city)
+
+	})
+	.catch((err) => {
+		////console.log(err);
+	});
+
+	return{
+		type:'SET RANDOM',
+			payload:city	
+	}
+
+}
+
+const geolocation = (
+		canUseDOM && navigator.geolocation ?
+		navigator.geolocation : 
+		({
+			getCurrentPosition(success, failure) {
+				failure(`Your browser doesn't support geolocation.`);
+			},
+		})
+		);
+
+
+// action creator
+
+function fetchAB() {
+	return dispatch => {
+		const fetchA = fetch( 'https://pure-river-42551.herokuapp.com/api/randomcity' );
+		const fetchB = fetch( 'api/endpoint/B' );
+		return Promise.all([ fetchA, fetchB ])
+			.then( values => {
+				//console.log('yo')
+				dispatch(showABAction(values)) 
+
+			})
+		//.catch( err => throw err );
+	}
+} 
+showABAction
+*/
 

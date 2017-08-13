@@ -5,10 +5,11 @@ import { connect } from 'react-redux'
 import {
 	setLocation,
 	addMap,
-	getFirstMap
+	getFirstMap,
+	fetchRandomCities
 } from './reducers'
 
-import RandomCityMap from '../random-cities'
+import RandomCityMap from '../random'
 import canUseDOM from "can-use-dom";
 
 import raf from "raf";
@@ -43,18 +44,6 @@ const GeolocationExampleGoogleMap = withGoogleMap(props => (
 			));
 
 
-const RandomCity = withGoogleMap(props => {
-	//console.log(props) 
-	return (
-	<div>
-		<i>{props.name}</i>		
-		
-		<GoogleMap defaultZoom={12} center={props.center}>
-			<Marker position={props.center} title={props.name} />
-		</GoogleMap>
-	</div>
-	)
-});
 
 
 
@@ -80,8 +69,9 @@ class YourMap extends Component {
 	}
 	componentDidMount() {
 
+		console.log(this)
 		this.props.getFirstMap();
-		let winner = Math.floor(Math.random()*4)
+		//let winner = Math.floor(Math.random()*4)
 
 	}
 
@@ -94,13 +84,18 @@ class YourMap extends Component {
 
 	render() {
 		var rands = [];
-		for (var i=0; i < 4; i++) {
-			if(this.state.winner === i){
-				var winner = true;
-			}else{
-				var winner = false; 
-			}
-			//rands.push(<RandomCityMap key={i} winner={winner} inside={this.inside}/>);
+		var cities = this.props.randomCities[0];
+	        console.log(cities);
+		
+		if(cities){ //There's def a better way.  
+			console.log(this.props.winner)
+			var r = this.props.randomCities[0]; 
+			let winner = null; 
+			cities.forEach((c, i) => { 
+				c.city == this.props.winner ? winner = true : winner = false;  
+				let center = {'lat':c.lat, 'lng':c.lon} 
+				rands.push(<RandomCityMap  key={i} winner={winner} inside={this.inside} center={center} name={c.city} winner={winner}/>);			
+			})
 		}
 		return (
 
@@ -129,14 +124,18 @@ const mapStateToProps = state => ({
 	count: state.counter.count,
       	//randomLocations:state.randomMap.randomLocations,
 	randomCities: state.yourMap.randomCities,
+	winner: state.yourMap.winner,
+
       	position: state.yourMap.position,
         center: state.yourMap.center
+
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	setLocation,
       	addMap, 
       	getFirstMap,
+        fetchRandomCities,
       	changePage: () => push('/about-us')
 }, dispatch)
 
