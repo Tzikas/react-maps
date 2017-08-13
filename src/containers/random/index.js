@@ -117,7 +117,7 @@ class RandomCityMap extends Component {
 
 					<h5 style={{margin:`10px 0 0 0`}} onClick={this.props.increment} > 
 
-						{this.props.count} {this.props.name} {String(this.props.winner)}
+						{this.props.count} {this.props.name} {String(this.props.winner)} {this.props.distance}
 					</h5>
 					<button onClick={() => { this.props.checkWinner(this.props.winner); this.props.fetchRandomCities(); this.props.increment(); }}>{this.props.name} is the closest?</button>
 					

@@ -86,10 +86,11 @@ class YourMap extends Component {
 		
 		if(cities){ //There's def a better way.  
 			let winner = null; 
-			cities.forEach((c, i) => { 
+			cities.forEach((c, i) => {
+			        console.log(c)	
 				c.city == this.props.winner ? winner = true : winner = false;  
 				let center = {'lat':c.lat, 'lng':c.lon} 
-				rands.push(<RandomCityMap  key={i} winner={winner} inside={this.inside} center={center} name={c.city} winner={winner}/>);			
+				rands.push(<RandomCityMap  key={i} winner={winner} distance={c.distance} center={center} name={c.city} winner={winner}/>);			
 			})
 		}
 		return (
