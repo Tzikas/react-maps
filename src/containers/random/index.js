@@ -5,12 +5,10 @@ import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
-  increment,
-  incrementAsync,
-  setLocation,
-  checkWinner
+  checkWinner,
 } from './randomMap'
 
+import { increment } from '../../modules/counter'
 import { fetchRandomCities } from '../map/reducers'
 
 /***/
@@ -49,7 +47,7 @@ const geolocation = (
 		);
 
 const RandomCity = withGoogleMap(props => {
-	//console.log(props) 
+	////console.log(props) 
 	return (
 		<div>
 			<i>{props.name}</i>		
@@ -87,7 +85,7 @@ class RandomCityMap extends Component {
 			},
 		})
 		.then((response) => {
-			//console.log(response) 
+			////console.log(response) 
 			return response.json()
 		})
 		.then((city) => {
@@ -103,7 +101,7 @@ class RandomCityMap extends Component {
 			this.props.setLocation(c)
 		})
 		.catch((err) => {
-			//console.log(err);
+			////console.log(err);
 		});*/
 
 	}
@@ -121,7 +119,7 @@ class RandomCityMap extends Component {
 
 						{this.props.count} {this.props.name} {String(this.props.winner)}
 					</h5>
-					<button onClick={this.props.fetchRandomCities}>{this.props.name} is the closest?</button>
+					<button onClick={() => { this.props.checkWinner(this.props.winner); this.props.fetchRandomCities(); this.props.increment(); }}>{this.props.name} is the closest?</button>
 					
 					<RandomCity
 						containerElement={
@@ -155,7 +153,6 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => bindActionCreators({
   increment,
-  setLocation,
   checkWinner,
   fetchRandomCities,      
   changePage: () => push('/about-us')

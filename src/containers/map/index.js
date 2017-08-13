@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
 	setLocation,
-	addMap,
 	getFirstMap,
 	fetchRandomCities
 } from './reducers'
@@ -69,7 +68,6 @@ class YourMap extends Component {
 	}
 	componentDidMount() {
 
-		console.log(this)
 		this.props.getFirstMap();
 		//let winner = Math.floor(Math.random()*4)
 
@@ -85,11 +83,8 @@ class YourMap extends Component {
 	render() {
 		var rands = [];
 		var cities = this.props.randomCities[0];
-	        console.log(cities);
 		
 		if(cities){ //There's def a better way.  
-			console.log(this.props.winner)
-			var r = this.props.randomCities[0]; 
 			let winner = null; 
 			cities.forEach((c, i) => { 
 				c.city == this.props.winner ? winner = true : winner = false;  
@@ -100,7 +95,8 @@ class YourMap extends Component {
 		return (
 
 				<div>
-				<button onClick={this.props.addMap}>Push</button>
+
+				<h2>{this.props.score}</h2>
 				<GeolocationExampleGoogleMap
 					key={'frenchtoast'}
 					containerElement={
@@ -127,13 +123,13 @@ const mapStateToProps = state => ({
 	winner: state.yourMap.winner,
 
       	position: state.yourMap.position,
-        center: state.yourMap.center
+        center: state.yourMap.center,
+	score: state.randomMap.score
 
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
 	setLocation,
-      	addMap, 
       	getFirstMap,
         fetchRandomCities,
       	changePage: () => push('/about-us')

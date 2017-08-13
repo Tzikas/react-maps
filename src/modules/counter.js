@@ -43,7 +43,6 @@ export default (state = initialState, action) => {
 }
 
 export const increment = () => {
-	console.log('wtf')
   return dispatch => {
     dispatch({
       type: INCREMENT_REQUESTED
